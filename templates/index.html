@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <h1>Todo List</h1>
+    <form action="{{ url_for('add') }}" method="post" class="add-form">
+      <input type="text" name="text" placeholder="新增待辦事項..." required>
+      <button type="submit">新增</button>
+    </form>
+    <ul class="todo-list">
+      {% for todo in todos %}
+      <li class="{{ 'done' if todo.done }}">
+        <form action="{{ url_for('toggle', todo_id=todo.id) }}" method="post" class="inline">
+          <button type="submit" class="toggle-btn">{{ '✓' if todo.done else '○' }}</button>
+        </form>
+        <span class="text">{{ todo.text }}</span>
+        <form action="{{ url_for('delete', todo_id=todo.id) }}" method="post" class="inline">
+          <button type="submit" class="delete-btn">刪除</button>
+        </form>
+      </li>
+      {% else %}
+      <li class="empty">目前沒有待辦事項</li>
+      {% endfor %}
+    </ul>
+  </main>
+</body>
+</html>
